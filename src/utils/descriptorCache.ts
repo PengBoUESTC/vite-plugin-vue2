@@ -1,6 +1,7 @@
 import path from 'path'
 import slash from 'slash'
 import hash from 'hash-sum'
+import { readFileSync } from 'fs';
 import type { SFCDescriptor } from '@vue/component-compiler-utils'
 import { parse } from '@vue/component-compiler-utils'
 import * as vueTemplateCompiler from 'vue-template-compiler'
@@ -39,16 +40,22 @@ export function setPrevDescriptor(filename: string, entry: SFCDescriptor) {
   prevCache.set(slash(filename), entry)
 }
 
-export function getDescriptor(filename: string, errorOnMissing = true) {
+export function getDescriptor(filename: string, options: ResolvedOptions, errorOnMissing = true) {
   const descriptor = cache.get(slash(filename))
   if (descriptor)
     return descriptor
 
   if (errorOnMissing) {
-    throw new Error(
-      `${filename} has no corresponding SFC entry in the cache. `
-        + 'This is a vite-plugin-vue2 internal error, please open an issue.',
+    const descriptor = createDescriptor(
+      filename,
+      readFileSync(filename, 'utf-8'),
+      options
     )
+    return descriptor
+    // throw new Error(
+    //   `${filename} has no corresponding SFC entry in the cache. `
+    //     + 'This is a vite-plugin-vue2 internal error, please open an issue.',
+    // )
   }
 }
 

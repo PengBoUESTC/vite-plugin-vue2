@@ -114,7 +114,7 @@ export function createVuePlugin(rawOptions: VueViteOptions = {}): Plugin {
         if (query.src)
           return fs.readFileSync(filename, 'utf-8')
 
-        const descriptor = getDescriptor(filename)!
+        const descriptor = getDescriptor(filename, options)!
         let block: SFCBlock | null | undefined
 
         if (query.type === 'script')
@@ -151,6 +151,7 @@ export function createVuePlugin(rawOptions: VueViteOptions = {}): Plugin {
 
       const descriptor = getDescriptor(
         query.from ? decodeURIComponent(query.from) : filename,
+        options
       )!
       // sub block request
       if (query.type === 'template') {

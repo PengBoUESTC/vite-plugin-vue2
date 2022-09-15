@@ -18,7 +18,7 @@ export async function handleHotUpdate(
   { file, modules, read }: HmrContext,
   options: ResolvedOptions,
 ): Promise<ModuleNode[] | void> {
-  const prevDescriptor = getDescriptor(file, false)
+  const prevDescriptor = getDescriptor(file, options, false)
   if (!prevDescriptor) {
     // file hasn't been requested yet (e.g. async component)
     return
