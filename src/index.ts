@@ -151,7 +151,7 @@ export function createVuePlugin(rawOptions: VueViteOptions = {}): Plugin {
 
       const descriptor = getDescriptor(
         query.from ? decodeURIComponent(query.from) : filename,
-        options
+        options,
       )!
       // sub block request
       if (query.type === 'template') {

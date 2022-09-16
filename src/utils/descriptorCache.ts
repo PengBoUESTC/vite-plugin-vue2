@@ -1,7 +1,7 @@
 import path from 'path'
+import { existsSync, readFileSync } from 'fs'
 import slash from 'slash'
 import hash from 'hash-sum'
-import { readFileSync } from 'fs';
 import type { SFCDescriptor } from '@vue/component-compiler-utils'
 import { parse } from '@vue/component-compiler-utils'
 import * as vueTemplateCompiler from 'vue-template-compiler'
@@ -45,11 +45,11 @@ export function getDescriptor(filename: string, options: ResolvedOptions, errorO
   if (descriptor)
     return descriptor
 
-  if (errorOnMissing) {
+  if (errorOnMissing && existsSync(filename)) {
     const descriptor = createDescriptor(
-      filename,
       readFileSync(filename, 'utf-8'),
-      options
+      filename,
+      options,
     )
     return descriptor
     // throw new Error(
